@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ekspor Data Inventaris Lama</title>
+  <link rel="stylesheet" href="legacy_export_helper.css">
+</head>
+<body>
+  <main class="helper-card">
+    <p class="eyebrow">ALAT MIGRASI LOKAL</p>
+    <h1>Ekspor inventaris lama</h1>
+    <p>
+      Alat ini membaca kunci <code>inventaris-items</code>, memvalidasi setiap
+      baris, lalu membuat JSON aman yang dapat diimpor ke aplikasi baru.
+    </p>
+    <div id="status" class="status" role="status" aria-live="polite">
+      Siap membaca data.
+    </div>
+    <button id="exportButton" type="button">Baca dan ekspor JSON</button>
+    <details>
+      <summary>Jika data tidak ditemukan</summary>
+      <p>
+        Jalankan helper ini dari lingkungan/origin yang sama dengan aplikasi
+        lama. Penyimpanan <code>window.storage</code> bukan API browser standar,
+        sehingga file biasa mungkin tidak dapat mengakses data dari host lama.
+      </p>
+    </details>
+  </main>
+  <script type="module" src="legacy_export_helper.js"></script>
+</body>
+</html>
+

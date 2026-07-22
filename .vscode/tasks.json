@@ -1,0 +1,178 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dev: start server",
+      "type": "shell",
+      "command": "bash \"${workspaceFolder}/.vscode/scripts/run-dev-server.sh\"",
+      "windows": {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${workspaceFolder}\\.vscode\\scripts\\run-dev-server.ps1\""
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "inventaris-gudang",
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "Inventaris Gudang listening on http://127\\.0\\.0\\.1:"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false,
+        "clear": false
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "dev: open external browser",
+      "type": "shell",
+      "command": "bash \"${workspaceFolder}/.vscode/scripts/open-browser.sh\" \"http://127.0.0.1:8765/\"",
+      "windows": {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${workspaceFolder}\\.vscode\\scripts\\open-browser.ps1\" -Url \"http://127.0.0.1:8765/\""
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared",
+        "close": true
+      }
+    },
+    {
+      "label": "dev: open simple browser",
+      "type": "shell",
+      "command": "echo ${input:openSimpleBrowser}",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared",
+        "close": true,
+        "echo": false
+      }
+    },
+    {
+      "label": "dev: start + open external browser",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "dev: start server",
+        "dev: open external browser"
+      ],
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "dev: start + open browser",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "dev: start server",
+        "dev: open external browser"
+      ],
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "dev: start + open simple browser",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "dev: start server",
+        "dev: open simple browser"
+      ],
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "dev: preflight",
+      "type": "shell",
+      "command": "bash \"${workspaceFolder}/.vscode/scripts/run-python.sh\" run.py --preflight",
+      "windows": {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${workspaceFolder}\\.vscode\\scripts\\run-python.ps1\" run.py --preflight"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "release: verify project",
+      "type": "shell",
+      "command": "bash \"${workspaceFolder}/.vscode/scripts/run-python.sh\" internal/verify_release.py",
+      "windows": {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${workspaceFolder}\\.vscode\\scripts\\run-python.ps1\" internal/verify_release.py"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "release: build portable",
+      "type": "shell",
+      "command": "bash \"${workspaceFolder}/.vscode/scripts/run-python.sh\" internal/build_portable_release.py",
+      "windows": {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${workspaceFolder}\\.vscode\\scripts\\run-python.ps1\" internal/build_portable_release.py"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "release: verify portable folder",
+      "type": "shell",
+      "command": "bash \"${workspaceFolder}/.vscode/scripts/run-python.sh\" internal/verify_release.py --root \"release/Inventaris Gudang\"",
+      "windows": {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${workspaceFolder}\\.vscode\\scripts\\run-python.ps1\" internal/verify_release.py --root \"release\\Inventaris Gudang\""
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "openSimpleBrowser",
+      "type": "command",
+      "command": "simpleBrowser.api.open",
+      "args": ["http://127.0.0.1:8765/"]
+    }
+  ]
+}

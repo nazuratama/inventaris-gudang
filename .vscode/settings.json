@@ -1,0 +1,31 @@
+{
+  "python.terminal.activateEnvironment": true,
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/*:Zone.Identifier": true
+  },
+  "files.watcherExclude": {
+    "**/data/**": true,
+    "**/backups/**": true,
+    "**/logs/**": true,
+    "**/runtime/python/**": true,
+    "**/release/**": true
+  },
+  "search.exclude": {
+    "**/runtime/python/**": true,
+    "**/release/**": true,
+    "**/backups/**": true,
+    "**/logs/**": true,
+    "**/__pycache__/**": true
+  },
+  "remote.localPortHost": "localhost",
+  "remote.portsAttributes": {
+    "8765": {
+      "label": "Inventaris Gudang",
+      "protocol": "http",
+      "onAutoForward": "notify",
+      "requireLocalPort": true
+    }
+  }
+}

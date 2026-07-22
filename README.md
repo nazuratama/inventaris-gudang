@@ -1,0 +1,138 @@
+# Inventaris Gudang
+
+Inventaris Gudang `1.0.0` is a local-first inventory application for Windows
+with an Indonesian user interface. SQLite is the primary data store, while
+Excel workbooks, SQLite snapshots, and optional Google Drive synchronization
+provide independent backup layers.
+
+> [Download the latest Windows release](../../releases/latest/download/inventaris-gudang-windows.zip)
+
+The download link becomes available after
+`inventaris-gudang-windows.zip` is attached to the latest GitHub Release.
+
+## Why this project exists
+
+Inventaris Gudang began as a practical way to support a friend who opened an
+agricultural supply store. The application was built and provided free of
+charge so the store could manage products, stock movements, backups, and basic
+warehouse analytics without depending on a subscription service.
+
+With the first user's approval, the project is now shared as open source. The
+hope is that it can help other small businesses, agricultural stores, learners,
+and contributors who need a transparent local inventory system.
+
+Sometimes useful software starts with a simple decision: help a friend.
+
+## Run the application
+
+1. Place the complete `Inventaris Gudang` folder in a writable location.
+2. Double-click `Inventaris Gudang.bat`.
+3. Wait for the runtime, migration, and integrity checks to finish.
+4. The application opens `http://127.0.0.1:8765` in the browser.
+
+Python is bundled under `runtime/python`; normal startup does not download
+dependencies. Use **Pengaturan → Keamanan → Tutup aplikasi** before shutting
+down the computer or moving the folder so pending backups can finish safely.
+
+## Features
+
+- A compact single-screen dashboard with stock summaries, charts, calendar,
+  and recent movements.
+- Products, categories, locations, units, and incoming/outgoing transactions.
+- An auditable stock history containing before-and-after quantities.
+- Local analytics with filters, drill-down, accessible tables, PNG, CSV, and
+  Excel exports.
+- Automatic/current Excel backups, daily copies, SQLite snapshots, file lists,
+  verification, download, retention, and guarded restore.
+- Optional offline-first Google Drive backup. Local backups continue while
+  offline and uploads wait in a persistent queue.
+- Verified application updates through GitHub Releases.
+- Import preview and validation before any data is committed.
+- Optional demonstration data and a guarded **Mulai ulang inventaris** action.
+
+Supplier and batch features are intentionally absent from the final product.
+Migration `005` removes their historical tables only after a pre-migration
+snapshot has been created successfully.
+
+## Important data locations
+
+| Purpose | Location |
+|---|---|
+| Primary database | `data/inventory.db` |
+| Current Excel backup | `backups/current_inventory_backup.xlsx` |
+| Daily Excel backups | `backups/daily/` |
+| Database snapshots | `backups/database/` |
+| Local Google Drive token | `data/credentials/` |
+| Pending update packages | `data/update_staging/` |
+| Per-installation settings | `config/settings.json` |
+| Application logs | `logs/` |
+
+Do not open or edit `inventory.db` with spreadsheet software.
+
+## Google Drive backup
+
+Online backup is disabled by default. A developer must provide the Google OAuth
+client configuration in the untracked `config/settings.json`; the user can
+then connect an account and enable the feature under
+**Pengaturan → Backup online**. A Drive folder link may be supplied, or the
+application can create an `Inventaris Gudang` folder automatically.
+
+The safety order is always:
+
+1. commit the change to SQLite;
+2. create and verify the local Excel backup;
+3. add the verified file to the cloud queue;
+4. upload when network access and Google authorization are available.
+
+## Application updates
+
+The updater consumes official GitHub Releases instead of running `git pull`.
+Configure:
+
+```json
+{
+  "github_repository": "owner/repository",
+  "github_update_asset_name": "inventaris-gudang-windows.zip"
+}
+```
+
+Update archives must be produced by `internal/build_portable_release.py`. The
+application checks the GitHub SHA-256 digest, verifies every entry in
+`UPDATE_MANIFEST.json`, preserves `data/`, `backups/`, `logs/`, branding, and
+`config/settings.json`, and then restarts the Windows application.
+
+## Build a Windows release
+
+On a build machine with internet access:
+
+```bash
+python internal/build_portable_release.py --refresh-runtime
+```
+
+Outputs:
+
+- client folder: `release/Inventaris Gudang/`;
+- GitHub Release asset: `release/inventaris-gudang-windows.zip`.
+
+Publish the generated asset with GitHub CLI:
+
+```bash
+gh release create v1.0.0 \
+  "release/inventaris-gudang-windows.zip" \
+  --title "Inventaris Gudang 1.0.0" \
+  --notes-file CHANGELOG.md \
+  --latest
+```
+
+## Development checks
+
+```bash
+python -m compileall -q app scripts internal run.py
+node --check frontend/scripts/app.js
+python internal/verify_release.py --root "release/Inventaris Gudang"
+```
+
+Detailed documentation is available under [docs](docs/), especially
+[backup and restore](docs/backup-and-restore.md),
+[database](docs/database.md), and
+[portable Windows distribution](docs/portable-distribution.md).

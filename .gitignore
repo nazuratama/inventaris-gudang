@@ -1,0 +1,97 @@
+# Windows Mark-of-the-Web sidecars
+*:Zone.Identifier
+*Zone.Identifier
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+# Keep shared VS Code tasks/debug helpers; ignore only personal overrides.
+.vscode/*.local.json
+.vscode/*.code-workspace
+.idea/
+*.swp
+*.swo
+*~
+
+# Python caches, virtual environments, and test/coverage output
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pytype/
+.pyre/
+.coverage
+.coverage.*
+htmlcov/
+.python-version
+
+# Local secrets and environment overrides
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Per-installation settings
+config/settings.json
+config/settings.local.json
+
+# Runtime database, locks, and user-uploaded branding
+data/*.db
+data/*.db-*
+data/*.sqlite
+data/*.sqlite-*
+data/server.lock
+data/server.pid.json
+data/branding/*
+!data/branding/.gitkeep
+data/credentials/*
+!data/credentials/.gitkeep
+data/import_staging/*
+!data/import_staging/.gitkeep
+data/update_staging/*
+!data/update_staging/.gitkeep
+
+# Generated Excel/database backups and application logs
+backups/*.xlsx
+backups/daily/*
+backups/database/*
+!backups/daily/.gitkeep
+!backups/database/.gitkeep
+logs/*.log
+logs/*.json
+
+# Temporary exports, imports, and local diagnostics
+*.tmp
+*.temp
+*.bak
+*.swp
+tmp/
+temp/
+test-results/
+
+# Generated release/build output and JavaScript dependencies
+release/
+dist/
+build/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Graphify caches and generated snapshots (source code remains tracked)
+graphify-out/cache/
+graphify-out/2026-*/
+graphify-out/.graphify_*
+graphify-out/.vocab.txt

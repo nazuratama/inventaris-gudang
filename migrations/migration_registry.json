@@ -1,0 +1,27 @@
+[
+  {
+    "version": 1,
+    "description": "Create the initial inventory, movement, backup, import, and settings schema.",
+    "file": "001_initial_schema.sql"
+  },
+  {
+    "version": 2,
+    "description": "Add query indexes, case-insensitive SKU uniqueness, and default settings.",
+    "file": "002_indexes_and_defaults.sql"
+  },
+  {
+    "version": 3,
+    "description": "Add analytics settings, financial fields, suppliers, batches, expiration tracking, and demonstration-data flags.",
+    "file": "003_analytics_demo_and_batches.sql"
+  },
+  {
+    "version": 4,
+    "description": "Add selectable units (satuan) master catalog seeded from defaults and existing item units.",
+    "file": "004_units_catalog.sql"
+  },
+  {
+    "version": 5,
+    "description": "Finalize version 1.0 by removing legacy supplier and batch data and adding durable cloud-backup jobs.",
+    "file": "005_finalize_v1_and_cloud_jobs.sql"
+  }
+]
