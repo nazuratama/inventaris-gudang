@@ -1,0 +1,254 @@
+/* Shared filter panels — same chrome as settings / analytics */
+.inventory-filters,
+.movement-filters,
+.analytics-filter-bar {
+  display: grid;
+  gap: var(--space-2);
+  padding: 1rem var(--panel-pad-x);
+  border: 1px solid var(--color-border);
+  border-radius: var(--panel-radius);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.inventory-filters {
+  /* Search + kategori + lokasi + satuan + kondisi stok */
+  grid-template-columns: minmax(12rem, 1.4fr) repeat(4, minmax(7.5rem, 1fr));
+}
+
+.movement-filters {
+  /* Search + jenis + 2 tanggal */
+  grid-template-columns: minmax(14rem, 1.6fr) repeat(3, minmax(8.5rem, 1fr));
+}
+
+/* Select group participates in the same grid as the search field. */
+.inventory-filter-selects,
+.movement-filter-controls {
+  display: contents;
+}
+
+.inventory-filters .search-control,
+.movement-filters .search-control {
+  width: 100%;
+}
+
+.inventory-filters .filter-control,
+.movement-filters .filter-control,
+.analytics-filter-bar .filter-control,
+.inventory-filters .search-control input,
+.movement-filters .search-control input {
+  min-height: var(--control-height);
+}
+
+.inventory-page,
+.movements-page,
+.analytics-page,
+.ops-page,
+.dashboard-page,
+.app-page {
+  gap: var(--page-gap);
+  align-content: start;
+}
+
+/* Table header sort — click column header; ↑ asc / ↓ desc */
+th.table-sortable {
+  padding: 0;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.table-sort-button {
+  display: inline-flex;
+  width: 100%;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: inherit;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0.625rem var(--space-4);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+th.align-left .table-sort-button {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+th.align-center .table-sort-button {
+  justify-content: center;
+  text-align: center;
+}
+
+th.align-right .table-sort-button {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.table-sort-button:hover {
+  background: rgb(37 107 77 / 6%);
+  color: var(--color-primary);
+}
+
+.table-sort-button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  outline-offset: -2px;
+}
+
+th.table-sortable.is-sorted .table-sort-button {
+  color: var(--color-primary);
+}
+
+.table-sort-label {
+  min-width: 0;
+}
+
+.table-sort-indicator {
+  position: relative;
+  display: inline-grid;
+  width: 0.85rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  place-items: center;
+  opacity: 0.35;
+}
+
+.table-sort-indicator .table-sort-arrow {
+  width: 0.72rem;
+  height: 0.72rem;
+  grid-area: 1 / 1;
+  opacity: 0.45;
+}
+
+/* Stack both arrows faintly when unsorted; emphasize one when sorted */
+.table-sort-indicator .table-sort-arrow-up {
+  transform: translateY(-0.12rem);
+}
+
+.table-sort-indicator .table-sort-arrow-down {
+  transform: translateY(0.12rem);
+}
+
+th.table-sortable:hover .table-sort-indicator,
+.table-sort-indicator.is-active {
+  opacity: 1;
+}
+
+.table-sort-indicator.is-asc .table-sort-arrow-up,
+.table-sort-indicator.is-desc .table-sort-arrow-down {
+  opacity: 1;
+  color: var(--color-primary);
+}
+
+.table-sort-indicator.is-asc .table-sort-arrow-down,
+.table-sort-indicator.is-desc .table-sort-arrow-up {
+  opacity: 0.18;
+}
+
+.filters-summary {
+  display: flex;
+  min-height: 1.85rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0.15rem 0.1rem;
+  color: var(--color-text-soft);
+  font-size: var(--section-desc-size);
+}
+
+.stock-cell {
+  display: inline-grid;
+  justify-items: end;
+}
+
+.stock-cell strong {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Global threshold colors (settings → batas stok minimum) */
+.stock-level-ok,
+.stock-level-ok strong,
+.detail-stock-value.stock-level-ok {
+  color: var(--color-success);
+}
+
+.stock-level-low,
+.stock-level-low strong,
+.detail-stock-value.stock-level-low {
+  color: var(--color-warning);
+}
+
+.stock-level-out,
+.stock-level-out strong,
+.detail-stock-value.stock-level-out {
+  color: var(--color-danger);
+}
+
+.archive-row {
+  opacity: 0.68;
+}
+
+.archive-row .cell-primary {
+  text-decoration: line-through;
+  text-decoration-color: var(--color-text-faint);
+}
+
+.movement-quantity-in {
+  color: var(--color-success);
+}
+
+.movement-quantity-out {
+  color: var(--color-warning);
+}
+
+.movement-quantity-adjustment {
+  color: var(--color-info);
+}
+
+.stock-context {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: 0.9rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 12%, var(--color-border));
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--color-primary) 7%, transparent), transparent 60%),
+    var(--color-surface-muted);
+}
+
+.stock-context strong {
+  display: block;
+  font-size: var(--text-sm);
+}
+
+.stock-context small {
+  display: block;
+  margin-top: 0.1rem;
+  color: var(--color-text-soft);
+  font-size: var(--text-xs);
+}
+
+.stock-context-value {
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  white-space: nowrap;
+}
+

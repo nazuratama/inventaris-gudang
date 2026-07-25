@@ -1,0 +1,454 @@
+/* —— Shared keyframes —— */
+@keyframes skeleton-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.55rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-out {
+  to {
+    opacity: 0;
+    transform: translateX(0.65rem);
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes drawer-in {
+  from {
+    opacity: 0.4;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.28rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes page-leave {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-0.16rem);
+  }
+}
+
+@keyframes panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.22rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes panel-leave {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-0.14rem);
+  }
+}
+
+@keyframes fade-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.2rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* —— Overlays —— */
+.toast {
+  animation: toast-in var(--transition-normal);
+}
+
+.toast.is-leaving {
+  animation: toast-out var(--transition-normal) forwards;
+}
+
+.modal[open] .modal-shell,
+.command-dialog[open] .command-shell {
+  animation: modal-in var(--transition-normal);
+}
+
+.drawer-layer:not([hidden]) .drawer {
+  animation: drawer-in var(--transition-normal);
+}
+
+.drawer-layer:not([hidden]) .drawer-backdrop {
+  animation: fade-rise-in var(--motion-normal) var(--ease-out);
+}
+
+/* —— Route / page content —— */
+.page-content {
+  transition:
+    opacity var(--motion-page) var(--ease-out),
+    transform var(--motion-page) var(--ease-out);
+}
+
+.page-content.is-page-leave {
+  opacity: 0;
+  transform: translateY(-0.16rem);
+  pointer-events: none;
+}
+
+.page-content.is-page-enter {
+  animation: page-enter var(--transition-page) both;
+}
+
+.page-content.is-page-enter > .app-page,
+.page-content.is-page-enter > .page-container {
+  animation: page-enter var(--transition-page) both;
+}
+
+/* Soft page heading swap */
+.page-heading h1,
+.page-heading p {
+  transition:
+    opacity var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out);
+}
+
+.page-heading.is-swapping h1,
+.page-heading.is-swapping p {
+  opacity: 0.35;
+  transform: translateY(0.1rem);
+}
+
+/* —— Shared content panels (inventaris / riwayat / soft swaps) —— */
+.inventory-content-panel,
+.movements-content-panel,
+.content-panel {
+  min-width: 0;
+  transition:
+    opacity var(--transition-panel),
+    transform var(--transition-panel);
+  will-change: opacity, transform;
+}
+
+.inventory-content-panel.is-visible,
+.movements-content-panel.is-visible,
+.content-panel.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Brief ease when sort/filter swaps table body without full panel leave. */
+.inventory-content-panel.is-soft-swap,
+.movements-content-panel.is-soft-swap,
+.content-panel.is-soft-swap {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.inventory-content-panel.is-leaving,
+.movements-content-panel.is-leaving,
+.content-panel.is-leaving {
+  opacity: 0;
+  transform: translateY(-0.16rem);
+  pointer-events: none;
+}
+
+.inventory-content-panel.is-entering,
+.movements-content-panel.is-entering,
+.content-panel.is-entering {
+  opacity: 0;
+  transform: translateY(0.22rem);
+  pointer-events: none;
+}
+
+.movements-content-panel.is-page-soft.is-entering,
+.inventory-content-panel.is-page-soft.is-entering,
+.content-panel.is-page-soft.is-entering {
+  transform: translateY(0.08rem);
+}
+
+/* —— Interactive chrome —— */
+.inventory-scope-chip {
+  transition:
+    background var(--transition-normal),
+    border-color var(--transition-normal),
+    color var(--transition-normal),
+    box-shadow var(--transition-normal),
+    transform var(--transition-fast);
+}
+
+.inventory-scope-chip.is-active {
+  transform: translateY(-1px);
+}
+
+.card,
+.summary-card,
+.action-card,
+.analytics-card,
+.dashboard-calendar-card,
+.dashboard-insights-card {
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.button,
+.icon-button,
+.command-button {
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+.button:active:not(:disabled),
+.icon-button:active:not(:disabled) {
+  transform: translateY(0.5px) scale(0.985);
+}
+
+.settings-window-nav-item,
+.account-menu-item {
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.settings-window-pane,
+.settings-window-content {
+  transition: opacity var(--transition-panel);
+}
+
+.settings-window-pane.is-pane-enter {
+  animation: fade-rise-in var(--transition-panel) both;
+}
+
+.compact-status .status-dot.status-running,
+.status-dot.status-running {
+  animation: status-pulse 1.5s ease-in-out infinite;
+}
+
+/* Soft loading / skeleton host */
+.inventory-soft-loading {
+  display: grid;
+  gap: var(--space-3);
+  animation: fade-rise-in var(--transition-panel) both;
+}
+
+.inventory-soft-loading-card {
+  display: grid;
+  gap: var(--space-3);
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.inventory-soft-loading-card .muted {
+  margin: 0.2rem 0 0;
+}
+
+.inventory-action-slot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.inventory-scope-nav-host {
+  min-height: 2.5rem;
+}
+
+.movements-filter-host,
+.movements-summary-host {
+  min-width: 0;
+}
+
+/* Table footer / chips */
+.table-footer-polished,
+.pagination,
+.movements-total-stat {
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+/* Analytics chart shells */
+.analytics-card-shell {
+  transition:
+    opacity var(--transition-panel),
+    transform var(--transition-panel);
+}
+
+.analytics-grid .analytics-card-shell {
+  animation: fade-rise-in var(--transition-page) both;
+}
+
+.analytics-grid .analytics-card-shell:nth-child(1) {
+  animation-delay: 0ms;
+}
+
+.analytics-grid .analytics-card-shell:nth-child(2) {
+  animation-delay: 40ms;
+}
+
+.analytics-grid .analytics-card-shell:nth-child(3) {
+  animation-delay: 80ms;
+}
+
+.analytics-grid .analytics-card-shell:nth-child(4) {
+  animation-delay: 120ms;
+}
+
+.analytics-grid .analytics-card-shell:nth-child(n + 5) {
+  animation-delay: 140ms;
+}
+
+/* Dashboard staggered entrance */
+.dashboard-page > * {
+  animation: fade-rise-in var(--transition-page) both;
+}
+
+.dashboard-page > :nth-child(1) {
+  animation-delay: 0ms;
+}
+
+.dashboard-page > :nth-child(2) {
+  animation-delay: 35ms;
+}
+
+.dashboard-page > :nth-child(3) {
+  animation-delay: 70ms;
+}
+
+.dashboard-page > :nth-child(4) {
+  animation-delay: 105ms;
+}
+
+.dashboard-page > :nth-child(n + 5) {
+  animation-delay: 130ms;
+}
+
+/* Backup / ops sections */
+.ops-page > * {
+  animation: fade-rise-in var(--transition-page) both;
+}
+
+.ops-page > :nth-child(1) {
+  animation-delay: 0ms;
+}
+
+.ops-page > :nth-child(2) {
+  animation-delay: 40ms;
+}
+
+.ops-page > :nth-child(3) {
+  animation-delay: 80ms;
+}
+
+.ops-page > :nth-child(n + 4) {
+  animation-delay: 110ms;
+}
+
+/* Inventory / movements page shell */
+.inventory-page > .inventory-workspace-bar,
+.movements-page > .page-toolbar,
+.analytics-page > .page-toolbar {
+  animation: fade-rise-in var(--transition-page) both;
+}
+
+.inventory-page > .inventory-filters,
+.movements-page > .movements-filter-host,
+.analytics-page > .analytics-filter-bar {
+  animation: fade-rise-in var(--transition-page) both;
+  animation-delay: 40ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .page-content.is-page-leave,
+  .page-content.is-page-enter,
+  .dashboard-page > *,
+  .ops-page > *,
+  .analytics-grid .analytics-card-shell {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

@@ -1,0 +1,50 @@
+"""Compatibility facade for backup services and routes."""
+
+from app.api.routes.backups import (
+    create_backup,
+    create_database_snapshot,
+    export_backup,
+    list_backups,
+    router,
+)
+from app.services.backups import (
+    CATEGORY_HEADERS,
+    ITEM_HEADERS,
+    LEGACY_CATEGORY_HEADERS,
+    LEGACY_ITEM_HEADERS,
+    LEGACY_ITEM_HEADERS_V1,
+    LEGACY_ITEM_HEADERS_V2,
+    LEGACY_ITEM_HEADERS_V3,
+    LEGACY_LOCATION_HEADERS,
+    LEGACY_MOVEMENT_HEADERS,
+    LEGACY_MOVEMENT_HEADERS_V1,
+    LEGACY_MOVEMENT_HEADERS_V2,
+    LOCATION_HEADERS,
+    MOVEMENT_HEADERS,
+    BackupManager,
+    ExcelBackupService,
+    _backup_list,
+)
+
+__all__ = [
+    "CATEGORY_HEADERS",
+    "ITEM_HEADERS",
+    "LEGACY_CATEGORY_HEADERS",
+    "LEGACY_ITEM_HEADERS",
+    "LEGACY_ITEM_HEADERS_V1",
+    "LEGACY_ITEM_HEADERS_V2",
+    "LEGACY_ITEM_HEADERS_V3",
+    "LEGACY_LOCATION_HEADERS",
+    "LEGACY_MOVEMENT_HEADERS",
+    "LEGACY_MOVEMENT_HEADERS_V1",
+    "LEGACY_MOVEMENT_HEADERS_V2",
+    "LOCATION_HEADERS",
+    "MOVEMENT_HEADERS",
+    "BackupManager",
+    "ExcelBackupService",
+    "create_backup",
+    "create_database_snapshot",
+    "export_backup",
+    "list_backups",
+    "router",
+]

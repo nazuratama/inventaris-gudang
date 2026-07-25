@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f4f5f1">
+  <meta name="referrer" content="no-referrer">
+  <title>ALFAN TANI · Inventaris Gudang</title>
+  <link rel="stylesheet" href="/styles/tokens.css?v=20260722-ui14">
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/layout.css?v=20260722-ui14">
+  <link rel="stylesheet" href="/styles/components.css?v=20260722-ui14">
+  <link rel="stylesheet" href="/styles/pages.css?v=20260722-ui14">
+  <link rel="stylesheet" href="/styles/animations.css?v=20260722-ui14">
+  <link rel="stylesheet" href="/styles/responsive.css?v=20260722-ui14">
+  <script type="module" src="/scripts/app.js?v=20260722-ui14"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#pageContent">Lewati ke konten utama</a>
+
+  <div id="connectionBanner" class="connection-banner" role="alert" hidden>
+    <svg class="icon" aria-hidden="true">
+      <use href="/assets/icons/sprite.svg#wifi-off"></use>
+    </svg>
+    <div>
+      <strong>Koneksi server lokal terputus</strong>
+      <span>Perubahan dinonaktifkan sementara. Aplikasi akan mencoba tersambung kembali.</span>
+    </div>
+    <button id="retryConnectionButton" class="button button-compact button-neutral" type="button">
+      Coba lagi
+    </button>
+  </div>
+
+  <div id="appShell" class="app-shell">
+    <div id="sidebarScrim" class="sidebar-scrim" hidden></div>
+    <aside id="sidebar" class="sidebar" aria-label="Navigasi utama">
+      <div class="sidebar-brand">
+        <span class="brand-mark" id="brandMark" aria-hidden="true">
+          <img id="warehouseLogoImage" class="brand-mark-image" alt="" hidden>
+          <svg class="icon brand-mark-fallback" id="brandMarkFallback">
+            <use href="/assets/icons/sprite.svg#warehouse"></use>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong id="applicationName">Inventaris Gudang</strong>
+          <small id="companyName">ALFAN TANI</small>
+        </span>
+        <button id="closeSidebarButton" class="icon-button mobile-only" type="button" aria-label="Tutup navigasi">
+          <svg class="icon" aria-hidden="true">
+            <use href="/assets/icons/sprite.svg#close"></use>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <p class="sidebar-section-label" aria-hidden="true">Ruang kerja</p>
+        <a class="nav-link" href="#/dashboard" data-route="dashboard">
+          <svg class="icon" aria-hidden="true">
+            <use href="/assets/icons/sprite.svg#dashboard"></use>
+          </svg>
+          <span>Dasbor</span>
+        </a>
+        <a class="nav-link" href="#/inventory" data-route="inventory">
+          <svg class="icon" aria-hidden="true">
+            <use href="/assets/icons/sprite.svg#package"></use>
+          </svg>
+          <span>Inventaris</span>
+        </a>
+        <a class="nav-link" href="#/analytics" data-route="analytics">
+          <svg class="icon" aria-hidden="true">
+            <use href="/assets/icons/sprite.svg#chart"></use>
+          </svg>
+          <span>Analitik</span>
+        </a>
+        <a class="nav-link" href="#/backups" data-route="backups">
+          <svg class="icon" aria-hidden="true">
+            <use href="/assets/icons/sprite.svg#backup"></use>
+          </svg>
+          <span>Backup dan Ekspor</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-system-status">
+          <p class="sidebar-section-label" aria-hidden="true">Penyimpanan lokal</p>
+          <div
+            id="backupStatus"
+            class="compact-status"
+            role="status"
+            aria-label="Status backup"
+            title="Status backup"
+          >
+            <span class="status-dot status-neutral" aria-hidden="true"></span>
+            <span>Memuat backup…</span>
+          </div>
+        </div>
+        <div class="sidebar-account" id="sidebarAccount">
+          <button
+            id="accountMenuButton"
+            class="sidebar-account-trigger"
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-controls="accountMenuPopover"
+          >
+            <span class="account-avatar" id="ownerAvatar" aria-hidden="true">
+              <img id="ownerPhotoImage" class="account-avatar-image" alt="" hidden>
+              <span class="account-avatar-initials" id="ownerAvatarInitials">K</span>
+            </span>
+            <span class="account-copy">
+              <strong id="ownerDisplayName">Kanjeng Alfian Diningrat</strong>
+              <small id="ownerDisplayMeta">Pemilik · ALFAN TANI</small>
+            </span>
+            <svg class="icon account-chevron" aria-hidden="true">
+              <use href="/assets/icons/sprite.svg#chevron-down"></use>
+            </svg>
+          </button>
+
+          <div
+            id="accountMenuPopover"
+            class="account-menu-popover"
+            role="menu"
+            hidden
+            aria-label="Menu akun"
+          >
+            <div class="account-menu-header">
+              <span class="account-avatar account-avatar-lg" id="ownerMenuAvatar" aria-hidden="true">
+                <img id="ownerMenuPhotoImage" class="account-avatar-image" alt="" hidden>
+                <span class="account-avatar-initials" id="ownerMenuAvatarInitials">K</span>
+              </span>
+              <span class="account-copy">
+                <strong id="ownerMenuName">Kanjeng Alfian Diningrat</strong>
+                <small id="ownerMenuMeta">Pemilik · ALFAN TANI</small>
+              </span>
+            </div>
+            <div class="account-menu-divider" role="separator"></div>
+            <button class="account-menu-item" type="button" role="menuitem" data-account-action="settings">
+              <svg class="icon" aria-hidden="true">
+                <use href="/assets/icons/sprite.svg#settings"></use>
+              </svg>
+              <span>Pengaturan</span>
+            </button>
+            <button class="account-menu-item" type="button" role="menuitem" data-account-action="help">
+              <svg class="icon" aria-hidden="true">
+                <use href="/assets/icons/sprite.svg#info"></use>
+              </svg>
+              <span>Bantuan</span>
+            </button>
+            <div class="account-menu-divider" role="separator"></div>
+            <button
+              class="account-menu-item account-menu-item-danger"
+              type="button"
+              role="menuitem"
+              data-account-action="shutdown"
+              data-requires-connection
+              id="shutdownButton"
+            >
+              <svg class="icon" aria-hidden="true">
+                <use href="/assets/icons/sprite.svg#power"></use>
+              </svg>
+              <span>Tutup</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="app-column">
+      <header class="topbar">
+        <button id="openSidebarButton" class="icon-button mobile-only" type="button" aria-label="Buka navigasi"
+          aria-controls="sidebar" aria-expanded="false">
+          <svg class="icon" aria-hidden="true">
+            <use href="/assets/icons/sprite.svg#menu"></use>
+          </svg>
+        </button>
+
+        <div class="page-heading">
+          <h1 id="pageTitle">Dasbor</h1>
+          <p id="pageDescription">Ringkasan kondisi gudang hari ini.</p>
+        </div>
+
+        <div class="topbar-tools">
+          <label class="global-search" for="globalSearch">
+            <svg class="icon" aria-hidden="true">
+              <use href="/assets/icons/sprite.svg#search"></use>
+            </svg>
+            <input id="globalSearch" type="search" placeholder="Cari barang…" maxlength="150" autocomplete="off">
+            <kbd>/</kbd>
+          </label>
+          <button id="commandButton" class="command-button" type="button" aria-label="Buka navigasi cepat"
+            title="Navigasi cepat (Ctrl+K)">
+            <svg class="icon" aria-hidden="true">
+              <use href="/assets/icons/sprite.svg#command"></use>
+            </svg>
+            <kbd>Ctrl K</kbd>
+          </button>
+        </div>
+      </header>
+
+      <main id="pageContent" class="page-content" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <div id="drawerRoot" class="drawer-layer" hidden>
+    <button class="drawer-backdrop" type="button" aria-label="Tutup panel"></button>
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" tabindex="-1">
+      <header class="drawer-header">
+        <div>
+          <p id="drawerEyebrow" class="eyebrow"></p>
+          <h2 id="drawerTitle">Detail</h2>
+        </div>
+        <button class="icon-button drawer-close" type="button" aria-label="Tutup panel">
+          <svg class="icon" aria-hidden="true">
+            <use href="/assets/icons/sprite.svg#close"></use>
+          </svg>
+        </button>
+      </header>
+      <div id="drawerContent" class="drawer-content"></div>
+    </aside>
+  </div>
+
+  <dialog id="appDialog" class="modal">
+    <div class="modal-shell">
+      <header class="modal-header">
+        <div>
+          <p id="dialogEyebrow" class="eyebrow"></p>
+          <h2 id="dialogTitle">Dialog</h2>
+          <p id="dialogDescription" class="modal-description"></p>
+        </div>
+        <button class="icon-button modal-close" type="button" aria-label="Tutup dialog">
+          <svg class="icon" aria-hidden="true">
+            <use href="/assets/icons/sprite.svg#close"></use>
+          </svg>
+        </button>
+      </header>
+      <div id="dialogBody" class="modal-body"></div>
+      <footer id="dialogFooter" class="modal-footer"></footer>
+    </div>
+  </dialog>
+
+  <dialog id="commandDialog" class="command-dialog" aria-labelledby="commandTitle">
+    <div class="command-shell">
+      <label class="command-search" for="commandSearch">
+        <svg class="icon" aria-hidden="true">
+          <use href="/assets/icons/sprite.svg#search"></use>
+        </svg>
+        <span id="commandTitle" class="sr-only">Navigasi cepat</span>
+        <input id="commandSearch" type="search" placeholder="Cari menu atau tindakan…" autocomplete="off">
+        <kbd>Esc</kbd>
+      </label>
+      <div id="commandResults" class="command-results" role="listbox"></div>
+      <footer class="command-footer">
+        <span><kbd>↑</kbd><kbd>↓</kbd> pilih</span>
+        <span><kbd>Enter</kbd> buka</span>
+      </footer>
+    </div>
+  </dialog>
+
+  <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="false"></div>
+
+  <noscript>
+    <div class="noscript-message">
+      JavaScript diperlukan untuk menjalankan Inventaris Gudang.
+    </div>
+  </noscript>
+</body>
+
+</html>

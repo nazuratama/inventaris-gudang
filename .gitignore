@@ -79,9 +79,13 @@ logs/*.json
 tmp/
 temp/
 test-results/
+.ruff*
+.command*
+.codex*
+.vscode
 
 # Generated release/build output and JavaScript dependencies
-release/
+# release/
 dist/
 build/
 node_modules/
