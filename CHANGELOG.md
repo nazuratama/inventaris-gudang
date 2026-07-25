@@ -33,6 +33,14 @@ The first final release of Inventaris Gudang for day-to-day store operations.
 - Set the application, backup metadata, and release package version to `1.0.0`.
 - Added browser integration verification for Google OAuth popups, downloads,
   update restarts, responsive layouts, and the managed app-window launcher.
+- Replaced the database-corruption startup traceback with guarded recovery from
+  the newest verified SQLite snapshot, preserving the damaged database,
+  WAL, and SHM files before restoration.
+- Prevented backup-status initialization from creating a zero-byte database
+  before migrations, and safely repairs the legacy first-run placeholder when
+  no WAL or snapshot can contain user data.
+- Blocked startup from OneDrive-synchronized folders and added clear migration
+  guidance to prevent database/journal state from being synchronized apart.
 
 ### Online services
 

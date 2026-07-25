@@ -38,9 +38,38 @@ encrypted, or unexpectedly expanded workbooks are rejected.
 
 ## Database integrity warning
 
-Stop modifying data. Preserve the database and logs, then restore a known valid
-backup. Do not delete or rename the damaged file unless a copied recovery
-procedure explicitly instructs it.
+The launcher now handles this condition before the server starts:
+
+1. It inspects snapshots under `backups/database/` without modifying the
+   damaged database.
+2. It skips snapshots that fail SQLite integrity, foreign-key, or application
+   schema checks.
+3. If a valid snapshot exists, it asks for confirmation before restoring it.
+4. The existing `inventory.db`, `inventory.db-wal`, and `inventory.db-shm`
+   files are preserved as `corrupt_inventory_*` before replacement.
+5. Preflight runs again and the server starts only if the restored database
+   passes.
+
+If no snapshot is valid, keep the complete application folder and logs for
+technical recovery. Do not delete the database or allow tools to create a new,
+empty replacement.
+
+One narrow exception is handled automatically: an older launcher could leave a
+zero-byte `inventory.db` before the first migration. The current preflight
+preserves and recreates that placeholder only when there is no non-empty WAL
+and no database snapshot that could contain user data.
+
+## Launcher reports that the folder is inside OneDrive
+
+Close the application and move the **complete** `Inventaris Gudang` folder to a
+writable local path such as `C:\Inventaris Gudang`. Do not move only
+`inventory.db`; its `-wal` and `-shm` companions must stay with it. Start the
+`.bat` file from the new location. After one successful start, the desktop
+shortcut is updated to that location.
+
+The launcher deliberately blocks a new server in a OneDrive-synchronized
+folder because separately synchronized database and journal files can represent
+different transaction moments.
 
 ## Charts show “Grafik belum dapat dimuat” or ECharts fails to load
 

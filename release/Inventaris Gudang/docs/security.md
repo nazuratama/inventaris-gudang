@@ -76,6 +76,11 @@ the application loader. Charts render on canvas, so the CSP does not require
 
 ## Data and file handling
 
+- Startup blocks the portable data directory inside OneDrive, where live
+  synchronization could separate SQLite database and WAL/SHM state.
+- Corruption recovery verifies SQLite structure, foreign keys, and required
+  application tables before restoration, requires user confirmation, and
+  preserves the original database triad.
 - SQL uses placeholders rather than string interpolation.
 - Pydantic validates UUIDs, finite bounded numbers, text lengths, and enums.
 - Analytics validates chart IDs, date ranges, category/location UUIDs, ranking

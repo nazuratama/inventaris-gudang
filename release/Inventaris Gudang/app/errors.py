@@ -29,7 +29,7 @@ class DatabaseCorruptionError(AppError):
             "DATABASE_CORRUPTED",
             (
                 "Database terdeteksi rusak. Penulisan dihentikan untuk melindungi data. "
-                "Pulihkan snapshot database melalui menu Backup dan Ekspor."
+                "Launcher dapat menawarkan snapshot terverifikasi sebelum aplikasi dimulai."
             ),
             status_code=503,
         )

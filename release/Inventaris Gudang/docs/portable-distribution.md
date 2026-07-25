@@ -7,6 +7,12 @@ Edge app window with a per-installation browser profile. A second launch
 activates the verified existing window. If Edge cannot be found or started,
 Windows opens the URL in the default browser.
 
+The mutable portable folder must be stored outside OneDrive and other live-sync
+directories. Startup blocks a synchronized location before accessing SQLite.
+If database preflight reports corruption in a local folder, the launcher can
+restore the newest verified snapshot after explicit confirmation while
+retaining the damaged database and its WAL/SHM companions.
+
 After the server is verified as healthy, the launcher creates or repairs the
 current user's `Inventaris Gudang` desktop shortcut. The shortcut starts the
 same hidden PowerShell launcher and is updated when the application is launched
@@ -49,6 +55,7 @@ and `config/settings.json`.
 ## Move the application
 
 Close the application from Settings, then copy the complete folder to a
-writable Windows location. The database, backups, configuration, cloud queue,
-and logs move with it. Launch the copied `.bat` once to update the desktop
-shortcut. Use encrypted media when inventory data is sensitive.
+writable Windows location outside OneDrive, for example
+`C:\Inventaris Gudang`. The database, backups, configuration, cloud queue, and
+logs move with it. Launch the copied `.bat` once to update the desktop shortcut.
+Use encrypted media when inventory data is sensitive.

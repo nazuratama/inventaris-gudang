@@ -16,6 +16,7 @@ import uvicorn
 
 from app.config import AppConfig
 from app.database import Database
+from app.errors import DatabaseCorruptionError
 from app.logging_setup import configure_logging
 from app.main import APPLICATION_ID, create_app
 from app.utils import utc_now
@@ -103,16 +104,30 @@ def ensure_local_config(config: AppConfig) -> None:
 
 
 def preflight(config: AppConfig) -> int:
-    config.ensure_directories()
-    ensure_local_config(config)
-    configure_logging(config)
-    database = Database(config)
-    database.initialize()
-    result = database.integrity_check()
-    if not result["healthy"]:
-        return 2
-    database.checkpoint()
-    return 0
+    try:
+        config.ensure_directories()
+        ensure_local_config(config)
+        configure_logging(config)
+        database = Database(config)
+        database.initialize()
+        result = database.integrity_check()
+        if not result["healthy"]:
+            raise DatabaseCorruptionError()
+        database.checkpoint()
+        print(json.dumps({"success": True, "code": "PREFLIGHT_OK"}))
+        return 0
+    except DatabaseCorruptionError as exc:
+        print(
+            json.dumps(
+                {
+                    "success": False,
+                    "code": exc.code,
+                    "message": exc.message,
+                },
+                ensure_ascii=False,
+            )
+        )
+        return 4
 
 
 def _write_pid_file(config: AppConfig, instance_id: str) -> None:

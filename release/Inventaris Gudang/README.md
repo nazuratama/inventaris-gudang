@@ -25,7 +25,9 @@ Sometimes useful software starts with a simple decision: help a friend.
 
 ## Run the application
 
-1. Place the complete `Inventaris Gudang` folder in a writable location.
+1. Place the complete `Inventaris Gudang` folder in a writable local location
+   outside OneDrive or another live synchronization folder, for example
+   `C:\Inventaris Gudang`.
 2. Double-click `Inventaris Gudang.bat`.
 3. Wait for the runtime, migration, and integrity checks to finish.
 4. The application opens `http://127.0.0.1:8765` in a maximized Microsoft Edge
@@ -48,6 +50,8 @@ safely.
   Excel exports.
 - Automatic/current Excel backups, daily copies, SQLite snapshots, file lists,
   verification, download, retention, and guarded restore.
+- Startup recovery that verifies the newest SQLite snapshot and preserves the
+  damaged database, WAL, and SHM files before an approved restore.
 - Optional offline-first Google Drive backup. Local backups continue while
   offline and uploads wait in a persistent queue.
 - Verified application updates through GitHub Releases.
@@ -74,6 +78,9 @@ snapshot has been created successfully.
 | Application logs | `logs/` |
 
 Do not open or edit `inventory.db` with spreadsheet software.
+Do not run the portable folder inside OneDrive: SQLite updates the database and
+its WAL/SHM companions as one state, while live file synchronization can copy
+those files at different moments.
 
 ## Google Drive backup
 

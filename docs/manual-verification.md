@@ -10,6 +10,15 @@
       managed app window.
 - [ ] With Edge unavailable in a controlled test environment, confirm the
       default browser fallback opens the application.
+- [ ] Starting from a OneDrive-synchronized folder is blocked before preflight
+      and instructs the operator to move the complete folder.
+- [ ] With a damaged test database and a valid snapshot, startup asks for
+      confirmation, preserves the database/WAL/SHM triad, restores the
+      snapshot, reruns preflight, and starts successfully.
+- [ ] With no valid snapshot, startup remains stopped and does not create an
+      empty replacement database.
+- [ ] A zero-byte first-run placeholder with no WAL data and no snapshots is
+      preserved, removed, and initialized successfully.
 - [ ] Health reports application version `1.0.0` and database schema `5`.
 - [ ] Create a product, an incoming transaction, and an outgoing transaction.
 - [ ] Stock totals and before/after history are correct.

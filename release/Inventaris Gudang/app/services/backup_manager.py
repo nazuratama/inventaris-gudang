@@ -106,6 +106,9 @@ class BackupManager:
         """Populate the first-page status from disk/logs after an application restart."""
 
         try:
+            database_path = self.service.database.path
+            if not database_path.is_file() or database_path.stat().st_size == 0:
+                return
             with self.service.database.connection() as connection:
                 row = connection.execute(
                     """

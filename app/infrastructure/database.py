@@ -68,8 +68,24 @@ class Database:
         existed = self.path.exists()
         if existed and self.path.stat().st_size == 0:
             self._preserve_corrupt_database()
-            self.status = "corrupted"
-            raise DatabaseCorruptionError()
+            wal_path = Path(f"{self.path}-wal")
+            has_nonempty_wal = wal_path.is_file() and wal_path.stat().st_size > 0
+            has_snapshots = any(
+                self.config.database_backups_path.glob("inventory_*.db")
+            )
+            if has_nonempty_wal or has_snapshots:
+                self.status = "corrupted"
+                raise DatabaseCorruptionError()
+
+            # Recover the empty placeholder produced by older startup code only
+            # when no journal or snapshot can contain user data.
+            self.path.unlink(missing_ok=True)
+            wal_path.unlink(missing_ok=True)
+            Path(f"{self.path}-shm").unlink(missing_ok=True)
+            existed = False
+            logger.warning(
+                "Reinitialized an empty database placeholder with no recoverable state"
+            )
         if existed:
             try:
                 self.assert_integrity()
@@ -167,6 +183,11 @@ class Database:
     def assert_integrity(self) -> None:
         result = self.integrity_check(quick=True)
         if not result["healthy"]:
+            logger.error(
+                "Database integrity failed: results=%s, foreign_key_violations=%s",
+                result["result"][:3],
+                result["foreign_key_violations"],
+            )
             raise DatabaseCorruptionError()
 
     def create_snapshot(self, *, reason: str) -> Path:

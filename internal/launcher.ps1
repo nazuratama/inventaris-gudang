@@ -12,6 +12,7 @@ $LocalConfig = Join-Path $Root "config\settings.json"
 $PidFile = Join-Path $Root "data\server.pid.json"
 $StartupLog = Join-Path $Root "logs\startup-error.log"
 $BrowserLauncher = Join-Path $Root "internal\browser_window.ps1"
+$RecoveryScript = Join-Path $Root "internal\recover_database.py"
 $ApplicationId = "inventaris-gudang-local"
 $Stage = "inisialisasi launcher"
 
@@ -28,6 +29,22 @@ function Show-StartupError {
     }
     catch {
         Write-Error $Message
+    }
+}
+
+function Show-StartupNotice {
+    param([string]$Message)
+    try {
+        $shell = New-Object -ComObject WScript.Shell
+        [void]$shell.Popup(
+            $Message,
+            0,
+            "Inventaris Gudang",
+            0x40
+        )
+    }
+    catch {
+        Write-Output $Message
     }
 }
 
@@ -129,6 +146,113 @@ print(json.dumps({
     }
 }
 
+function Get-SynchronizedRootMatch {
+    $normalizedRoot = [System.IO.Path]::GetFullPath($Root).TrimEnd("\")
+    foreach ($variableName in @("OneDrive", "OneDriveConsumer", "OneDriveCommercial")) {
+        $value = [Environment]::GetEnvironmentVariable($variableName)
+        if ([string]::IsNullOrWhiteSpace($value)) {
+            continue
+        }
+        try {
+            $synchronizedRoot = [System.IO.Path]::GetFullPath($value).TrimEnd("\")
+        }
+        catch {
+            continue
+        }
+        if (
+            $normalizedRoot.Equals(
+                $synchronizedRoot,
+                [System.StringComparison]::OrdinalIgnoreCase
+            ) -or
+            $normalizedRoot.StartsWith(
+                $synchronizedRoot + "\",
+                [System.StringComparison]::OrdinalIgnoreCase
+            )
+        ) {
+            return [PSCustomObject]@{
+                Provider = $variableName
+                Path = $synchronizedRoot
+            }
+        }
+    }
+    if ($normalizedRoot -match "(?i)(^|\\)OneDrive(?:\s*-\s*[^\\]+)?(\\|$)") {
+        return [PSCustomObject]@{
+            Provider = "OneDrive"
+            Path = "folder OneDrive"
+        }
+    }
+    return $null
+}
+
+function Invoke-ApplicationPreflight {
+    $previousPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        $output = & $Python $RunScript --preflight 2>&1
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousPreference
+    }
+    return [PSCustomObject]@{
+        ExitCode = $exitCode
+        Output = (($output | Out-String).Trim())
+    }
+}
+
+function Invoke-DatabaseRecoveryCommand {
+    param([string]$Action)
+    $previousPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        $output = & $Python $RecoveryScript --root $Root $Action 2>&1
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousPreference
+    }
+    $text = (($output | Out-String).Trim())
+    try {
+        $payload = $text | ConvertFrom-Json
+    }
+    catch {
+        throw "Alat pemulihan database menghasilkan respons yang tidak valid."
+    }
+    if ($exitCode -ne 0 -or $payload.success -ne $true) {
+        $recoveryMessage = [string]$payload.error.message
+        if ([string]::IsNullOrWhiteSpace($recoveryMessage)) {
+            $recoveryMessage = "Pemulihan database gagal tanpa detail."
+        }
+        throw $recoveryMessage
+    }
+    return $payload
+}
+
+function Confirm-DatabaseRecovery {
+    param([object]$Snapshot)
+    $message = (
+        "Database utama tidak lolos pemeriksaan integritas.`n`n" +
+        "Snapshot valid terbaru:`n" +
+        "$($Snapshot.file_name)`n" +
+        "Waktu (UTC): $($Snapshot.modified_at)`n`n" +
+        "Pulihkan snapshot ini sekarang? Database lama beserta file WAL/SHM " +
+        "akan disimpan di backups\database dan tidak dihapus."
+    )
+    try {
+        $shell = New-Object -ComObject WScript.Shell
+        $choice = $shell.Popup(
+            $message,
+            0,
+            "Inventaris Gudang - Pemulihan Database",
+            0x24
+        )
+        return $choice -eq 6
+    }
+    catch {
+        return $false
+    }
+}
+
 function Get-HealthPayload {
     param([string]$BaseUri, [int]$Port)
     try {
@@ -220,6 +344,18 @@ function Remove-StalePidOrFail {
 }
 
 try {
+    $Stage = "memeriksa lokasi penyimpanan"
+    $synchronizedRoot = Get-SynchronizedRootMatch
+    if ($null -ne $synchronizedRoot) {
+        throw (
+            "Folder aplikasi berada di lokasi sinkronisasi OneDrive ($($synchronizedRoot.Path)). " +
+            "SQLite menggunakan inventory.db bersama file WAL/SHM yang harus tetap konsisten. " +
+            "Tutup aplikasi, lalu pindahkan SELURUH folder 'Inventaris Gudang' ke " +
+            "C:\Inventaris Gudang atau folder lokal lain di luar OneDrive. " +
+            "Jangan hanya memindahkan inventory.db."
+        )
+    }
+
     $Stage = "menyiapkan folder"
     foreach ($directory in @(
         "data",
@@ -256,7 +392,8 @@ try {
         $RunScript,
         $DefaultConfig,
         $RuntimeManifest,
-        $BrowserLauncher
+        $BrowserLauncher,
+        $RecoveryScript
     )) {
         if (-not (Test-Path -LiteralPath $requiredFile -PathType Leaf)) {
             throw "Berkas aplikasi tidak lengkap: $([System.IO.Path]::GetFileName($requiredFile))"
@@ -292,17 +429,32 @@ try {
     Remove-StalePidOrFail
 
     $Stage = "menjalankan preflight"
-    $previousPreference = $ErrorActionPreference
-    $ErrorActionPreference = "Continue"
-    try {
-        $preflightOutput = & $Python $RunScript --preflight 2>&1
-        $preflightExitCode = $LASTEXITCODE
+    $preflight = Invoke-ApplicationPreflight
+    if ($preflight.ExitCode -eq 4) {
+        $Stage = "mencari snapshot database"
+        $inspection = Invoke-DatabaseRecoveryCommand -Action "--inspect"
+        if ($inspection.recovery_available -ne $true) {
+            throw (
+                "Database utama rusak dan tidak ada snapshot valid di backups\database. " +
+                "Jangan hapus data\inventory.db maupun file corrupt_inventory_*. " +
+                "Gunakan salinan folder untuk pemulihan teknis."
+            )
+        }
+        if (-not (Confirm-DatabaseRecovery -Snapshot $inspection.snapshot)) {
+            Show-StartupNotice (
+                "Pemulihan dibatalkan. Aplikasi tidak dimulai dan database tidak diubah."
+            )
+            exit 0
+        }
+
+        $Stage = "memulihkan snapshot database"
+        [void](Invoke-DatabaseRecoveryCommand -Action "--restore-latest")
+
+        $Stage = "memverifikasi hasil pemulihan"
+        $preflight = Invoke-ApplicationPreflight
     }
-    finally {
-        $ErrorActionPreference = $previousPreference
-    }
-    if ($preflightExitCode -ne 0) {
-        $detail = (($preflightOutput | Out-String).Trim())
+    if ($preflight.ExitCode -ne 0) {
+        $detail = $preflight.Output
         if ($detail.Length -gt 1500) {
             $detail = $detail.Substring($detail.Length - 1500)
         }

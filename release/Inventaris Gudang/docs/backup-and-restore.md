@@ -54,10 +54,19 @@ creates a new Excel backup. Invalid rows are never skipped silently.
 
 ## Corruption recovery
 
-1. Stop the application and copy the complete folder for diagnosis.
-2. Preserve `inventory.db`, `-wal`, and `-shm` files when present.
-3. Restore a verified snapshot from the backup list or follow technical support
-   instructions.
-4. Recheck stock totals and movement history after restoration.
+1. Stop the application and move it outside OneDrive or any other live-sync
+   folder before attempting recovery.
+2. Start the launcher. It searches `backups/database/` from newest to oldest
+   and accepts only a snapshot that passes SQLite quick-check, foreign-key, and
+   required-table validation.
+3. Review the snapshot name and UTC timestamp in the confirmation dialog.
+4. Approve restoration only when rolling back to that snapshot is acceptable.
+5. Recheck stock totals and movement history after the application starts.
 
-The application does not automatically replace a database detected as corrupt.
+The launcher never silently replaces a corrupt database. On approval, it first
+preserves `inventory.db`, `inventory.db-wal`, and `inventory.db-shm` as uniquely
+named `corrupt_inventory_*` files. If no valid snapshot exists, startup remains
+stopped so an empty database cannot hide the original data. The sole exception
+is a zero-byte first-run placeholder with no non-empty WAL and no snapshot; it
+contains no recoverable database pages, so preflight preserves it and safely
+creates the initial schema.

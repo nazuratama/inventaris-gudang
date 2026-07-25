@@ -46,6 +46,7 @@ REQUIRED_PATHS = (
     "internal/legacy_export_helper.js",
     "internal/apply_update.ps1",
     "internal/browser_window.ps1",
+    "internal/recover_database.py",
     "internal/restart_for_update.ps1",
     "UPDATE_MANIFEST.json",
 )
@@ -129,9 +130,13 @@ def verify_browser_experience(root: Path, errors: list[str]) -> None:
     expected_tokens = {
         "internal/launcher.ps1": (
             "$BrowserLauncher",
+            "$RecoveryScript",
             ". $BrowserLauncher",
             "Open-InventoryApplicationWindow",
             "-RefreshExisting",
+            "Get-SynchronizedRootMatch",
+            "Confirm-DatabaseRecovery",
+            "--restore-latest",
         ),
         "internal/browser_window.ps1": (
             "Get-EdgeExecutable",
@@ -165,6 +170,14 @@ def verify_browser_experience(root: Path, errors: list[str]) -> None:
         "internal/restart_for_update.ps1": (
             'Start-Process -FilePath (Join-Path $Root "Inventaris Gudang.bat")',
         ),
+        "internal/recover_database.py": (
+            "PRAGMA quick_check",
+            "PRAGMA foreign_key_check",
+            "REQUIRED_TABLES",
+            "source.backup(destination)",
+            "corrupt_inventory_",
+            "restore_latest_snapshot",
+        ),
         "frontend/styles/responsive.css": ("@media",),
     }
     for relative_path, tokens in expected_tokens.items():
@@ -187,6 +200,42 @@ def verify_browser_experience(root: Path, errors: list[str]) -> None:
             errors.append(
                 "Launcher must use the same app-window opener for existing and new servers."
             )
+
+
+def verify_preflight_recovery_contract(root: Path, errors: list[str]) -> None:
+    """Verify that corruption has a compact preflight signal and guarded recovery."""
+
+    expected_tokens = {
+        "run.py": (
+            "except DatabaseCorruptionError as exc:",
+            '"code": exc.code',
+            "return 4",
+        ),
+        "app/services/backup_manager.py": (
+            "if not database_path.is_file() or database_path.stat().st_size == 0:",
+        ),
+        "app/infrastructure/database.py": (
+            "has_nonempty_wal",
+            "has_snapshots",
+            "Reinitialized an empty database placeholder",
+        ),
+        "internal/launcher.ps1": (
+            "if ($preflight.ExitCode -eq 4)",
+            'Invoke-DatabaseRecoveryCommand -Action "--inspect"',
+            "Confirm-DatabaseRecovery",
+            'Invoke-DatabaseRecoveryCommand -Action "--restore-latest"',
+        ),
+    }
+    for relative_path, tokens in expected_tokens.items():
+        path = root / relative_path
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8")
+        for token in tokens:
+            if token not in text:
+                errors.append(
+                    f"Preflight recovery contract missing in {relative_path}: {token}"
+                )
 
 
 def verify(root: Path) -> dict[str, object]:
@@ -292,6 +341,23 @@ def verify(root: Path) -> dict[str, object]:
         errors.append("SecurityHeadersMiddleware is not registered in app/main.py.")
 
     verify_browser_experience(root, errors)
+    verify_preflight_recovery_contract(root, errors)
+
+    recovery_script = root / "internal" / "recover_database.py"
+    if recovery_script.is_file():
+        recovery_test = subprocess.run(
+            [sys.executable, str(recovery_script), "--self-test"],
+            cwd=root,
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        if (
+            recovery_test.returncode != 0
+            or "database-recovery-self-test-ok" not in recovery_test.stdout
+        ):
+            errors.append("Database recovery self-test failed.")
 
     source_paths = [root / "app", root / "run.py", root / "internal"]
     for source_path in source_paths:
