@@ -11,6 +11,7 @@ $DefaultConfig = Join-Path $Root "config\default-settings.json"
 $LocalConfig = Join-Path $Root "config\settings.json"
 $PidFile = Join-Path $Root "data\server.pid.json"
 $StartupLog = Join-Path $Root "logs\startup-error.log"
+$BrowserLauncher = Join-Path $Root "internal\browser_window.ps1"
 $ApplicationId = "inventaris-gudang-local"
 $Stage = "inisialisasi launcher"
 
@@ -254,12 +255,14 @@ try {
         $Pythonw,
         $RunScript,
         $DefaultConfig,
-        $RuntimeManifest
+        $RuntimeManifest,
+        $BrowserLauncher
     )) {
         if (-not (Test-Path -LiteralPath $requiredFile -PathType Leaf)) {
             throw "Berkas aplikasi tidak lengkap: $([System.IO.Path]::GetFileName($requiredFile))"
         }
     }
+    . $BrowserLauncher
 
     $writeProbe = Join-Path $Root "data\.write-test-$PID.tmp"
     [System.IO.File]::WriteAllText($writeProbe, "ok")
@@ -276,7 +279,11 @@ try {
     if ($null -ne $health) {
         $pidData = Read-PidData
         if (Test-VerifiedInstance -Health $health -PidData $pidData -Settings $settings) {
-            Start-Process $baseUri
+            Open-InventoryApplicationWindow `
+                -Root $Root `
+                -BaseUri $baseUri `
+                -InstallationId $settings.InstallationId `
+                -LogPath $StartupLog
             exit 0
         }
         throw "Port $($settings.Port) digunakan oleh proses lain atau instalasi berbeda."
@@ -344,7 +351,12 @@ try {
         throw "Server lokal tidak siap dalam 60 detik. Periksa logs\error.log."
     }
 
-    Start-Process $baseUri
+    Open-InventoryApplicationWindow `
+        -Root $Root `
+        -BaseUri $baseUri `
+        -InstallationId $settings.InstallationId `
+        -LogPath $StartupLog `
+        -RefreshExisting
 }
 catch {
     $message = "$Stage`: $($_.Exception.Message)"

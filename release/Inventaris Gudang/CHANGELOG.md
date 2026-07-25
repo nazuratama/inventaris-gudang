@@ -19,6 +19,8 @@ The first final release of Inventaris Gudang for day-to-day store operations.
   data and backup, plus system and updates.
 - Portable Windows startup without a separate Python installation or runtime
   dependency download.
+- A maximized single-instance Edge app window with default-browser fallback,
+  safe shutdown guidance, and an automatically maintained desktop shortcut.
 
 ### Finalization
 
@@ -29,6 +31,8 @@ The first final release of Inventaris Gudang for day-to-day store operations.
 - Resized dashboard charts and panels for a comfortable single-screen layout.
 - Standardized the white sidebar and refined the visual presentation.
 - Set the application, backup metadata, and release package version to `1.0.0`.
+- Added browser integration verification for Google OAuth popups, downloads,
+  update restarts, responsive layouts, and the managed app-window launcher.
 
 ### Online services
 

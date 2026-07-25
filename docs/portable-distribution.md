@@ -2,7 +2,15 @@
 
 `runtime/python/` contains 64-bit Windows CPython and pinned dependencies.
 Startup verifies `MANIFEST.sha256`, runs preflight checks, and then binds the
-server exclusively to `127.0.0.1`.
+server exclusively to `127.0.0.1`. The launcher opens a maximized Microsoft
+Edge app window with a per-installation browser profile. A second launch
+activates the verified existing window. If Edge cannot be found or started,
+Windows opens the URL in the default browser.
+
+After the server is verified as healthy, the launcher creates or repairs the
+current user's `Inventaris Gudang` desktop shortcut. The shortcut starts the
+same hidden PowerShell launcher and is updated when the application is launched
+from a different folder.
 
 ## Build a release
 
@@ -42,4 +50,5 @@ and `config/settings.json`.
 
 Close the application from Settings, then copy the complete folder to a
 writable Windows location. The database, backups, configuration, cloud queue,
-and logs move with it. Use encrypted media when inventory data is sensitive.
+and logs move with it. Launch the copied `.bat` once to update the desktop
+shortcut. Use encrypted media when inventory data is sensitive.

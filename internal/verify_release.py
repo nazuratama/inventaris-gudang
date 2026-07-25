@@ -45,6 +45,7 @@ REQUIRED_PATHS = (
     "internal/legacy_export_helper.css",
     "internal/legacy_export_helper.js",
     "internal/apply_update.ps1",
+    "internal/browser_window.ps1",
     "internal/restart_for_update.ps1",
     "UPDATE_MANIFEST.json",
 )
@@ -122,6 +123,72 @@ def verify_pe_x64(path: Path, errors: list[str]) -> None:
             errors.append(f"Runtime executable is not Windows x64: {path.name}")
 
 
+def verify_browser_experience(root: Path, errors: list[str]) -> None:
+    """Verify the Windows app-window, shutdown, and browser integration contract."""
+
+    expected_tokens = {
+        "internal/launcher.ps1": (
+            "$BrowserLauncher",
+            ". $BrowserLauncher",
+            "Open-InventoryApplicationWindow",
+            "-RefreshExisting",
+        ),
+        "internal/browser_window.ps1": (
+            "Get-EdgeExecutable",
+            "Get-VerifiedBrowserProcess",
+            "Show-ManagedBrowserWindow",
+            "--app=$BaseUri",
+            "--start-maximized",
+            "--user-data-dir=",
+            "Start-Process -FilePath $BaseUri",
+            "Ensure-InventoryDesktopShortcut",
+            "Inventaris Gudang.lnk",
+            "WScript.Shell",
+        ),
+        "frontend/index.html": (
+            'data-account-action="shutdown"',
+            "<span>Tutup aplikasi</span>",
+        ),
+        "frontend/scripts/shell/shutdown.js": (
+            "await shutdownApplication()",
+            "window.close()",
+            "tutup melalui tombol X",
+        ),
+        "frontend/scripts/pages/settings/online-services.js": (
+            'window.open("about:blank", "inventory-google-drive")',
+            "popup.location.href = result.authorization_url",
+        ),
+        "frontend/scripts/api/client.js": (
+            "anchor.download",
+            "URL.createObjectURL(blob)",
+        ),
+        "internal/restart_for_update.ps1": (
+            'Start-Process -FilePath (Join-Path $Root "Inventaris Gudang.bat")',
+        ),
+        "frontend/styles/responsive.css": ("@media",),
+    }
+    for relative_path, tokens in expected_tokens.items():
+        path = root / relative_path
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8")
+        for token in tokens:
+            if token not in text:
+                errors.append(
+                    f"Browser integration contract missing in {relative_path}: {token}"
+                )
+
+    launcher = root / "internal" / "launcher.ps1"
+    if launcher.is_file():
+        open_calls = launcher.read_text(encoding="utf-8").count(
+            "Open-InventoryApplicationWindow"
+        )
+        if open_calls != 2:
+            errors.append(
+                "Launcher must use the same app-window opener for existing and new servers."
+            )
+
+
 def verify(root: Path) -> dict[str, object]:
     errors: list[str] = []
     warnings: list[str] = []
@@ -154,6 +221,7 @@ def verify(root: Path) -> dict[str, object]:
         "backups/database/*",
         "logs/*.log",
         "data/*.pid*",
+        "data/browser-window.json",
         "data/*.lock",
         "data/credentials/*",
         "data/update_staging/*",
@@ -222,6 +290,8 @@ def verify(root: Path) -> dict[str, object]:
         encoding="utf-8"
     ):
         errors.append("SecurityHeadersMiddleware is not registered in app/main.py.")
+
+    verify_browser_experience(root, errors)
 
     source_paths = [root / "app", root / "run.py", root / "internal"]
     for source_path in source_paths:

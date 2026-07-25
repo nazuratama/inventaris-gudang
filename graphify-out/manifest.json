@@ -285,8 +285,8 @@
     "semantic_hash": ""
   },
   "internal/launcher.ps1": {
-    "mtime": 1784721875.6695876,
-    "ast_hash": "d397a5b57207fd667e736a9ad772ac75",
+    "mtime": 1785017807.7567563,
+    "ast_hash": "b8ed2468fb3b47fe1f041fd9e3e6a8e9",
     "semantic_hash": ""
   },
   "internal/legacy_export_helper.js": {
@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "internal/verify_release.py": {
-    "mtime": 1784721875.6712902,
-    "ast_hash": "05b7ef2cc20c18b337d18c069261cb72",
+    "mtime": 1785017962.724716,
+    "ast_hash": "497d9b113fc8ec5e29fa6bce8166602c",
     "semantic_hash": ""
   },
   "migrations/001_initial_schema.sql": {
@@ -355,13 +355,13 @@
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
-    "mtime": 1785004529.1258748,
-    "ast_hash": "e471cb5137363dc50bc62e823a36c2ab",
+    "mtime": 1785017924.5083723,
+    "ast_hash": "5687c89a86af9ba0722923e338ad8b4f",
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1785003399.6423056,
-    "ast_hash": "e0ac5e7152bb986960405f469e6e73cd",
+    "mtime": 1785017922.5244691,
+    "ast_hash": "3bbe816c33af596094cc1341473a7427",
     "semantic_hash": ""
   },
   "docs/analytics.md": {
@@ -370,8 +370,8 @@
     "semantic_hash": ""
   },
   "docs/architecture.md": {
-    "mtime": 1784721875.5891654,
-    "ast_hash": "e6d34b4640550c03eea8134cd2fb0945",
+    "mtime": 1785017924.1822512,
+    "ast_hash": "e10ccc30a7658141be093b4749b09847",
     "semantic_hash": ""
   },
   "docs/backup-and-restore.md": {
@@ -395,28 +395,28 @@
     "semantic_hash": ""
   },
   "docs/manual-verification.md": {
-    "mtime": 1785003401.3094318,
-    "ast_hash": "aaa71c1b318a156912e5382daa57a051",
+    "mtime": 1785017923.1767113,
+    "ast_hash": "b9caecd8e81189a0c847442a5ffb48ac",
     "semantic_hash": ""
   },
   "docs/portable-distribution.md": {
-    "mtime": 1785003400.6435392,
-    "ast_hash": "a74195c002111850bbe53d27a53da66b",
+    "mtime": 1785017922.858355,
+    "ast_hash": "8eef291d5b35d6882e19a267925fffe9",
     "semantic_hash": ""
   },
   "docs/security.md": {
-    "mtime": 1785003400.9687753,
-    "ast_hash": "b8d2feeaeab37b4f3862236ee0f85b67",
+    "mtime": 1785017923.8483655,
+    "ast_hash": "c09b19139d30d66c6a6057b6e7fcd295",
     "semantic_hash": ""
   },
   "docs/troubleshooting.md": {
-    "mtime": 1784721875.5905893,
-    "ast_hash": "d4271e871007de3dbd54a393f4897df6",
+    "mtime": 1785017923.5105972,
+    "ast_hash": "fac91b75c7eabe2aa7d234658f3fbc2e",
     "semantic_hash": ""
   },
   "docs/verification-report.md": {
-    "mtime": 1785003401.6743174,
-    "ast_hash": "852b9bc0a8015f3a7e9a8322cc0f62ea",
+    "mtime": 1785018162.0135326,
+    "ast_hash": "ddae015c01b5471d5b9a9b0a657ad7d4",
     "semantic_hash": ""
   },
   "frontend/assets/vendor/echarts/LICENSE.txt": {
@@ -425,8 +425,8 @@
     "semantic_hash": ""
   },
   "frontend/index.html": {
-    "mtime": 1784721875.6057878,
-    "ast_hash": "a0f7f6b373795ad22b92fa0cc27b88ce",
+    "mtime": 1785017808.0889192,
+    "ast_hash": "2af254818df20e3dd3dbce60b4ccdc4d",
     "semantic_hash": ""
   },
   "frontend/legacy-export.html": {
@@ -930,8 +930,8 @@
     "semantic_hash": ""
   },
   "frontend/scripts/shell/shutdown.js": {
-    "mtime": 1784721875.6323104,
-    "ast_hash": "770289bdf3f3d310d9b1c93c131c5197",
+    "mtime": 1785017808.4172194,
+    "ast_hash": "8c855845a7e06f73f59820ee8700fc37",
     "semantic_hash": ""
   },
   "frontend/scripts/shell/sidebar.js": {
@@ -1010,8 +1010,8 @@
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/UPDATE_MANIFEST.json": {
-    "mtime": 1785004534.4517498,
-    "ast_hash": "7e7d5bcac003470764f0d914f01c8390",
+    "mtime": 1785018199.4160757,
+    "ast_hash": "ad377f19472f278ed33699b91ec0a0b7",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/app/__init__.py": {
@@ -1775,8 +1775,8 @@
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/frontend/scripts/shell/shutdown.js": {
-    "mtime": 1784721875.6323104,
-    "ast_hash": "770289bdf3f3d310d9b1c93c131c5197",
+    "mtime": 1785017808.4172194,
+    "ast_hash": "8c855845a7e06f73f59820ee8700fc37",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/frontend/scripts/shell/sidebar.js": {
@@ -1850,8 +1850,8 @@
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/internal/launcher.ps1": {
-    "mtime": 1784721875.6695876,
-    "ast_hash": "d397a5b57207fd667e736a9ad772ac75",
+    "mtime": 1785017807.7567563,
+    "ast_hash": "b8ed2468fb3b47fe1f041fd9e3e6a8e9",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/internal/legacy_export_helper.js": {
@@ -1875,8 +1875,8 @@
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/internal/verify_release.py": {
-    "mtime": 1784721875.6712902,
-    "ast_hash": "05b7ef2cc20c18b337d18c069261cb72",
+    "mtime": 1785017962.724716,
+    "ast_hash": "497d9b113fc8ec5e29fa6bce8166602c",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/migrations/001_initial_schema.sql": {
@@ -1925,13 +1925,13 @@
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/CHANGELOG.md": {
-    "mtime": 1785004529.1258748,
-    "ast_hash": "e471cb5137363dc50bc62e823a36c2ab",
+    "mtime": 1785017924.5083723,
+    "ast_hash": "5687c89a86af9ba0722923e338ad8b4f",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/README.md": {
-    "mtime": 1785003399.6423056,
-    "ast_hash": "e0ac5e7152bb986960405f469e6e73cd",
+    "mtime": 1785017922.5244691,
+    "ast_hash": "3bbe816c33af596094cc1341473a7427",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/docs/analytics.md": {
@@ -1940,8 +1940,8 @@
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/docs/architecture.md": {
-    "mtime": 1784721875.5891654,
-    "ast_hash": "e6d34b4640550c03eea8134cd2fb0945",
+    "mtime": 1785017924.1822512,
+    "ast_hash": "e10ccc30a7658141be093b4749b09847",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/docs/backup-and-restore.md": {
@@ -1965,28 +1965,28 @@
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/docs/manual-verification.md": {
-    "mtime": 1785003401.3094318,
-    "ast_hash": "aaa71c1b318a156912e5382daa57a051",
+    "mtime": 1785017923.1767113,
+    "ast_hash": "b9caecd8e81189a0c847442a5ffb48ac",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/docs/portable-distribution.md": {
-    "mtime": 1785003400.6435392,
-    "ast_hash": "a74195c002111850bbe53d27a53da66b",
+    "mtime": 1785017922.858355,
+    "ast_hash": "8eef291d5b35d6882e19a267925fffe9",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/docs/security.md": {
-    "mtime": 1785003400.9687753,
-    "ast_hash": "b8d2feeaeab37b4f3862236ee0f85b67",
+    "mtime": 1785017923.8483655,
+    "ast_hash": "c09b19139d30d66c6a6057b6e7fcd295",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/docs/troubleshooting.md": {
-    "mtime": 1784721875.5905893,
-    "ast_hash": "d4271e871007de3dbd54a393f4897df6",
+    "mtime": 1785017923.5105972,
+    "ast_hash": "fac91b75c7eabe2aa7d234658f3fbc2e",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/docs/verification-report.md": {
-    "mtime": 1785003401.6743174,
-    "ast_hash": "852b9bc0a8015f3a7e9a8322cc0f62ea",
+    "mtime": 1785018162.0135326,
+    "ast_hash": "ddae015c01b5471d5b9a9b0a657ad7d4",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/frontend/assets/vendor/echarts/LICENSE.txt": {
@@ -1995,8 +1995,8 @@
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/frontend/index.html": {
-    "mtime": 1784721875.6057878,
-    "ast_hash": "a0f7f6b373795ad22b92fa0cc27b88ce",
+    "mtime": 1785017808.0889192,
+    "ast_hash": "2af254818df20e3dd3dbce60b4ccdc4d",
     "semantic_hash": ""
   },
   "release/Inventaris Gudang/frontend/legacy-export.html": {
@@ -2017,6 +2017,16 @@
   "release/Inventaris Gudang/frontend/assets/icons/sprite.svg": {
     "mtime": 1784721875.592931,
     "ast_hash": "4ab3cd4c9e74f99d205723bf4d938bb7",
+    "semantic_hash": ""
+  },
+  "internal/browser_window.ps1": {
+    "mtime": 1785018191.7402565,
+    "ast_hash": "89582e00b43558028c9e6c347f6cb95f",
+    "semantic_hash": ""
+  },
+  "release/Inventaris Gudang/internal/browser_window.ps1": {
+    "mtime": 1785018191.7402565,
+    "ast_hash": "89582e00b43558028c9e6c347f6cb95f",
     "semantic_hash": ""
   }
 }

@@ -50,6 +50,13 @@ Application-authored frontend code contains no inline event handlers, `eval`,
 `new Function`, or remote executable assets. Python runtime dependencies are
 never downloaded during application startup.
 
+The Windows launcher passes only its internally constructed loopback URL to
+Microsoft Edge app mode. Edge discovery uses registered or standard executable
+locations; no browser is downloaded. A dedicated per-installation browser
+profile is stored under the current Windows user's local application data. If
+managed app mode fails, Windows handles the same loopback URL with the default
+browser.
+
 Apache ECharts 5.6.0 is pinned as a vendored upstream asset at
 `frontend/assets/vendor/echarts/echarts.min.js`. It is loaded from the same
 origin only when a dashboard or analytics chart needs it. No CDN URL is used by
@@ -104,3 +111,5 @@ large bodies, raw SQL parameters, or unnecessary operating-system details.
 - Malware already running as the same Windows user can bypass application-level
   protections.
 - Browser policy may prevent the application from closing a user-controlled tab.
+- Closing the browser window directly does not guarantee a graceful server
+  shutdown; use **Tutup aplikasi** so pending backups can finish.

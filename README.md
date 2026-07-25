@@ -28,10 +28,13 @@ Sometimes useful software starts with a simple decision: help a friend.
 1. Place the complete `Inventaris Gudang` folder in a writable location.
 2. Double-click `Inventaris Gudang.bat`.
 3. Wait for the runtime, migration, and integrity checks to finish.
-4. The application opens `http://127.0.0.1:8765` in the browser.
+4. The application opens `http://127.0.0.1:8765` in a maximized Microsoft Edge
+   app window. If Edge is unavailable, the default browser is used.
 
 Python is bundled under `runtime/python`; normal startup does not download
-dependencies. Use **Pengaturan → Akun & keamanan → Tutup aplikasi** before
+dependencies. A desktop shortcut is created after a verified startup. Reopening
+the launcher activates the managed app window instead of starting another
+server or window. Use **Pengaturan → Akun & keamanan → Tutup aplikasi** before
 shutting down the computer or moving the folder so pending backups can finish
 safely.
 
@@ -50,6 +53,8 @@ safely.
 - Verified application updates through GitHub Releases.
 - Import preview and validation before any data is committed.
 - Optional demonstration data and a guarded **Mulai ulang inventaris** action.
+- A maximized single-instance Windows app window, default-browser fallback,
+  desktop shortcut, and guarded application shutdown.
 
 Supplier and batch features are intentionally absent from the final product.
 Migration `005` removes their historical tables only after a pre-migration

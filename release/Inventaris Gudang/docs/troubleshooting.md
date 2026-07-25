@@ -10,12 +10,19 @@ prepared distribution. End-user startup must not download packages.
 Wait briefly, then inspect `logs/error.log`. Confirm that firewall/security
 software allows loopback traffic and no other process is using port 8765.
 
+## The app window does not open
+
+The launcher first tries Microsoft Edge app mode and records non-fatal browser
+or shortcut problems in `logs/startup-error.log`. If Edge cannot be used, the
+URL opens in the default browser. Confirm that at least one browser is installed
+and that Windows allows the current user to create a desktop shortcut.
+
 ## A duplicate instance is reported
 
-Use the existing browser page when the health indicator is green. If the
+The launcher normally activates its verified existing app window. If the
 verified application process is unhealthy, shut down Windows normally or seek
 technical assistance. The launcher deliberately avoids terminating arbitrary
-Python processes.
+Python or browser processes.
 
 ## Excel backup failed
 

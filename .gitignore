@@ -53,6 +53,7 @@ data/*.sqlite
 data/*.sqlite-*
 data/server.lock
 data/server.pid.json
+data/browser-window.json
 data/branding/*
 !data/branding/.gitkeep
 data/credentials/*

@@ -47,7 +47,7 @@ export function createShutdownController(elements, { connection, router }) {
                 }),
                 element("h2", { text: "Aplikasi ALFAN TANI telah ditutup" }),
                 element("p", {
-                  text: "Backup tertunda sudah diselesaikan dan database ditutup dengan aman. Tab ini boleh ditutup.",
+                  text: "Backup tertunda sudah diselesaikan dan database ditutup dengan aman. Jika jendela tidak tertutup otomatis, tutup melalui tombol X.",
                 }),
               ],
             }),
